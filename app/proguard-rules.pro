@@ -12,6 +12,11 @@
 #   public *;
 #}
 
+-keepclassmembers class java.security.MessageDigest {
+    public void update(byte[]);
+    public byte[] digest();
+}
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable
