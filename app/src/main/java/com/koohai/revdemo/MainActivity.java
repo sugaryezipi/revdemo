@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        //gallery 用来环境加测
+        //
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.java_md_enc,R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.java_md_enc,R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.env_check)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

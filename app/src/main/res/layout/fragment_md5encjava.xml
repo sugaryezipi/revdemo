@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.md5Enc.Md5EncJavaFragment">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonEncrypt"
+        android:text="点击输出"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/text_md5enc_java"

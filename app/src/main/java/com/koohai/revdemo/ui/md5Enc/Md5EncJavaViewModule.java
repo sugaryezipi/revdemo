@@ -1,36 +1,71 @@
 package com.koohai.revdemo.ui.md5Enc;
+import android.app.Application;
+import android.content.Context;
+import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.security.MessageDigest;
-import com.koohai.encutils.SecurityUtils;
-public class Md5EncJavaViewModule extends ViewModel {
+
+import com.koohai.encutils.SecurityMd5Utils;
+import com.koohai.encutils.Utils;
+
+public class Md5EncJavaViewModule extends AndroidViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public static String  JavaEncInvoke(){
-
-        return SecurityUtils.calculateMD5Invoke("koohai456");
+    public static String  JavaEncInvoke(Context context){
+        Utils utils = new Utils();
+        String soPath = utils.getPath(context) + "/libkhsig.so";
+        Log.i("koohai", soPath);
+        String res = SecurityMd5Utils.stringFromJNI(soPath);
+        Log.i("反射调用md5", res != null ? res : "Result was null");
+        return SecurityMd5Utils.calculateMD5Invoke("koohai 反射调用md5" + res);
     }
 
     public static String  JavaEncInvokeCommon(){
 
-        return SecurityUtils.calculateMD5("koohai123");
+        return SecurityMd5Utils.calculateMD5("koohai invode ");
     }
 
-    public Md5EncJavaViewModule() {
+    public static String JavaEncInvokeFromc(Context context) {
+        // Get the path to the shared library
+
+        String res = SecurityMd5Utils.md5FromJni();
+        Log.i("通过c层调用md5", res != null ? res : "Result was null");
+        // Call the JNI function
+        return res;
+    }
+    public Md5EncJavaViewModule(Application application) {
+        super(application);
         mText = new MutableLiveData<>();
         StringBuilder sb = new StringBuilder();
-        sb.append(" \n 通过普通方法 实现md5: 参数koohai123 \n ");
+        sb.append(" \n 通过普通方法 实现md5: 参数 koohai \n ");
         sb.append(JavaEncInvokeCommon());
-        sb.append(" \n通过反射实现md5: 参数koohai456  \n");
-        sb.append(JavaEncInvoke());
+        sb.append(" \n通过反射实现md5: 参数 koohai 反射调用md5  xx\n");
+        sb.append(JavaEncInvoke(application));
 
+        sb.append(" \n通过c层调用md5 参数 koohai \n");
+        sb.append(JavaEncInvokeFromc(application));
 
         mText.setValue(sb.toString());
     }
+    public String triggerEncryption() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" \n 通过普通方法 实现md5: 参数 koohai \n ");
+        sb.append(JavaEncInvokeCommon());
+        sb.append(" \n通过反射实现md5: 参数 koohai 反射调用md5  xx\n");
+        sb.append(JavaEncInvoke(getApplication()));
 
+        sb.append(" \n通过c层调用md5 参数 koohai \n");
+        sb.append(JavaEncInvokeFromc(getApplication()));
+
+        // Optionally update the LiveData for observers to react
+        mText.setValue(sb.toString());
+
+        return sb.toString();
+    }
     public LiveData<String> getText() {
         return mText;
     }

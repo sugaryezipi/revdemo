@@ -26,4 +26,11 @@
         android:name="com.koohai.revdemo.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/env_check"
+        android:name="com.koohai.revdemo.ui.envcheck.EnvCheckFragment"
+        android:label="@string/env_check"
+        tools:layout="@layout/fragment_slideshow" />
+
+
 </navigation>

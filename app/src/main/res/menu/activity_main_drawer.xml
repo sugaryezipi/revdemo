@@ -20,5 +20,10 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />
+
+        <item
+            android:id="@+id/env_check"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/env_check" />
     </group>
 </menu>
