@@ -64,14 +64,30 @@ jstring md5Enc(JNIEnv* env, jclass jclazz) {
 
 
 
-jstring callFuncJava(JNIEnv* env, jclass jclazz) {
-    jclass Utillclazz= env->FindClass("com/koohai/encutils/SecurityMd5Utils");
+jstring callFuncJava(JNIEnv* env, jclass jclazz,jstring c) {
+    //调用java 写法和反射类似
+    jclass Utillclazz= env->FindClass("com/koohai/encutils/Utils");
     jmethodID init_ = env->GetMethodID(Utillclazz,"<init>","()V");
+    const char *str = env->GetStringUTFChars(c, nullptr);
+    if (str == nullptr) {
+        // 处理空指针的情况
+        LOGD("Failed to convert jstring to UTF-8 string.");
+        return nullptr;
+    }
+    LOGD("Input string: %s", str);
+    env->ReleaseStringUTFChars(c, str);  // 记得释放资源
+
 
     jobject  utilObj = env->NewObject(Utillclazz,init_);
     LOGD("utilObj %p", utilObj);
 
+    auto init_MethodID = env->GetStaticMethodID(Utillclazz, "calculateUtilsMD5", "(Ljava/lang/String;)Ljava/lang/String;");
 
+    jobject enc_res =  env->CallStaticObjectMethod(Utillclazz, init_MethodID,
+                                                   c);
+    LOGD("enc_params %p", enc_res);
+    LOGD("ndkobj %p", enc_res);
+    return static_cast<jstring>(enc_res);
 }
 
 jstring encodeFromC(JNIEnv* env, jclass jclazz, jstring c) {
@@ -132,7 +148,7 @@ JNI_OnLoad(JavaVM* vm, void* reserved) {
             {"stringFromJNI", "(Ljava/lang/String;)Ljava/lang/String;", (void*)encodeFromC},
             {"md5FromJni", "()Ljava/lang/String;", (void*)md5Enc},
             {"env_check", "()Ljava/lang/String;", (void*)envCheck},
-            {"callJniFuncJava", "()Ljava/lang/String;", (void*)callFuncJava},
+            {"callJniFuncJava", "(Ljava/lang/String;)Ljava/lang/String;", (void*)callFuncJava},
     };
 
 
