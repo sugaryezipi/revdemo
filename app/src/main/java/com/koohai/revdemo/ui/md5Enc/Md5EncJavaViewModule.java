@@ -16,10 +16,8 @@ public class Md5EncJavaViewModule extends AndroidViewModel {
     private final MutableLiveData<String> mText;
 
     public static String  JavaEncInvoke(Context context){
-        Utils utils = new Utils();
-        String soPath = utils.getPath(context) + "/libkhsig.so";
-        Log.i("koohai", soPath);
-        String res = SecurityMd5Utils.stringFromJNI(soPath);
+
+        String res = SecurityMd5Utils.stringFromJNI("koohai");
         Log.i("反射调用md5", res != null ? res : "Result was null");
         return SecurityMd5Utils.calculateMD5Invoke("koohai 反射调用md5" + res);
     }

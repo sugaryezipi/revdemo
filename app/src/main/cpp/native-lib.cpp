@@ -64,6 +64,15 @@ jstring md5Enc(JNIEnv* env, jclass jclazz) {
 
 
 
+jstring callFuncJava(JNIEnv* env, jclass jclazz) {
+    jclass Utillclazz= env->FindClass("com/koohai/encutils/SecurityMd5Utils");
+    jmethodID init_ = env->GetMethodID(Utillclazz,"<init>","()V");
+
+    jobject  utilObj = env->NewObject(Utillclazz,init_);
+    LOGD("utilObj %p", utilObj);
+
+
+}
 
 jstring encodeFromC(JNIEnv* env, jclass jclazz, jstring c) {
     // Convert the Java string (SO path) to a C-style string
@@ -104,6 +113,9 @@ jstring encodeFromC(JNIEnv* env, jclass jclazz, jstring c) {
     return result;
 }
 
+
+
+
 // JNI_OnLoad 函数确保 RegisterNatives 在库加载时被调用
 JNIEXPORT jint JNICALL
 JNI_OnLoad(JavaVM* vm, void* reserved) {
@@ -120,6 +132,7 @@ JNI_OnLoad(JavaVM* vm, void* reserved) {
             {"stringFromJNI", "(Ljava/lang/String;)Ljava/lang/String;", (void*)encodeFromC},
             {"md5FromJni", "()Ljava/lang/String;", (void*)md5Enc},
             {"env_check", "()Ljava/lang/String;", (void*)envCheck},
+            {"callJniFuncJava", "()Ljava/lang/String;", (void*)callFuncJava},
     };
 
 

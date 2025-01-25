@@ -74,6 +74,7 @@ public class SecurityMd5Utils {
 
     public static  native String md5FromJni();
     public static  native String env_check();
+    public static  native String callJniFuncJava();
 
 
 

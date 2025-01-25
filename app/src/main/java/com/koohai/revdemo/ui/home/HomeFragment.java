@@ -26,6 +26,14 @@ public class HomeFragment extends Fragment {
 
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        binding.buttonHome.setOnClickListener(v -> {
+            // Trigger encryption and update the text view with the result
+            String encryptedText = HomeViewModel.triggerEncryption();
+            System.out.println("click btn ，，，");
+            textView.setText(encryptedText);
+        });
+
         return root;
     }
 
